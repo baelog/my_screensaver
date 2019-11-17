@@ -11,7 +11,7 @@
 
 void my_screensaver(void);
 void my_event(project_t *);
-void branch(float, sfVertex *, project_t *, float, int);
+void branch(float, sfVertex, sfVertex, project_t *, float, int);
 
 int Randoms(int lower, int upper, int count)
 {
@@ -39,20 +39,21 @@ void my_screensaver(void)
     sfColor color = sfColor_fromRGB((rand() % (255 - 0 + 1)) + 0, (rand() % (255 - 0 + 1)), (rand() % (255 - 0 + 1)) + 0);
     project_t project;
     sfClock *clock;
+    sfVertexArray *array = sfVertexArray_create();
+    sfVertexArray_setPrimitiveType(array, sfLines);
     int var = 100;
     float len = (float)200;
     float height = (float)860;
-    sfVertex line[3];
-    line[0].position.x = (float)960;
-    line[0].position.y = height - len;
-    line[0].color = color;
-    line[1].position.x = (float)960;
-    line[1].position.y = height;
-    line[1].color = color;
+    sfVertex vertex1;
+    sfVertex vertex2;
+    vertex1.position.x = (float)960;
+    vertex1.position.y = height - len;
+    vertex1.color = color;
+    vertex2.position.x = (float)960;
+    vertex2.position.y = height;
+    vertex2.color = color;
     sfVector2f pos = {958, height};
     sfVector2f vector = {4, len};
-    int a = 0;
-    int b = 0;
     sfVideoMode mode = {1920, 1080, 32};
     project.window = sfRenderWindow_create(mode, "MY_SCREENSAVER", sfFullscreen, NULL);
     sfRenderWindow_setFramerateLimit(project.window, 60);
@@ -60,20 +61,17 @@ void my_screensaver(void)
         my_event(&project);
         sfRenderWindow_clear(project.window, sfBlack);
         sfRenderWindow_display(project.window);
-        sfRenderWindow_drawPrimitives(project.window, line, 255, sfLines, NULL);
+        sfVertexArray_append(array, vertex1);
+        sfVertexArray_append(array, vertex2);
+        sfRenderWindow_drawVertexArray(project.window, array, NULL);
         sfRenderWindow_display(project.window);
         //clock = sfClock_create();
         //while (clock < 1000);
         //sfClock_destroy(clock);
-
-        branch(0.6, line, &project, 3.1415 / 4 * 3, 0);
+        branch(0.6, vertex1, vertex2, &project, 3.1415 / 4 * 3, 0);
         color = sfColor_fromRGB((rand() % (255 - 0 + 1)) + 0, (rand() % (255 - 0 + 1)), (rand() % (255 - 0 + 1)) + 0);
-        line[0].position.x = 960;
-        line[0].position.y = height - len;
-        line[0].color = color;
-        line[1].position.x = 960;
-        line[1].position.y = height;
-        line[1].color = color;
+        vertex1.color = color;
+        vertex2.color = color;
     }
     sfRenderWindow_destroy(project.window);
 }

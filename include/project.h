@@ -18,3 +18,7 @@ typedef struct project_s
     sfVideoMode mode;
     sfEvent event;
 }project_t;
+
+void my_screensaver(void);
+void my_event(project_t *);
+void branch(float, sfVertex, sfVertex, project_t *, float, int);
