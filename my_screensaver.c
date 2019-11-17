@@ -9,7 +9,7 @@
 #include "include/my.h"
 #include <math.h>
 
-void branch(float change, sfVertex *my_line, project_t *var, float angle)
+void branch(float change, sfVertex *my_line, project_t *var, float angle, int a)
 {
     sfVertex line[3];
     line[0].position.x = my_line[0].position.x;
@@ -22,22 +22,26 @@ void branch(float change, sfVertex *my_line, project_t *var, float angle)
     float x30 = line[0].position.x;
     float y30 = line[0].position.y;
     if (result > 4) {
+        if (a)
+            angle = angle + (3.1415 / 4);
         float x2 = line[0].position.x + cos(3.1415 * (float)2 - angle) * result;
         float y2 = line[0].position.y + sin(3.1415 * (float)2 - angle) * result;
         line[1].position.x = line[0].position.x;
         line[1].position.y = line[0].position.y;
         line[0].position.x = x2;
         line[0].position.y = y2;
+        my_event(var);
         sfRenderWindow_drawPrimitives(var->window, line, 255, sfLines, NULL);
         sfRenderWindow_display(var->window);
-        branch(change, line, var, angle + (3.1415 / 4));
+        branch(change, line, var, angle + (3.1415 / 4), 0);
         float x3 = x30 + cos(3.1415 * (float)2 + (angle - 3.1415 / 4 * 2)) * result;
         float y3 = y30 - sin(3.1415 * (float)2 + (angle + 3.1415 / 4 * 6)) * result;
         line[0].position.x = x3;
         line[0].position.y = y3;
+        my_event(var);
+
         sfRenderWindow_drawPrimitives(var->window, line, 255, sfLines, NULL);
         sfRenderWindow_display(var->window);
-        //while (1);
-        branch(change, line, var, angle + (3.1415 / 2 * 3));
+        branch(change, line, var, angle - (3.1415 / 2), 1);
     }
 }

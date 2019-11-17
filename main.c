@@ -11,7 +11,17 @@
 
 void my_screensaver(void);
 void my_event(project_t *);
-void branch(float, sfVertex *, project_t *, float);
+void branch(float, sfVertex *, project_t *, float, int);
+
+int Randoms(int lower, int upper, int count)
+{
+    int i;
+    for (i = 0; i < count; i++) {
+        int num = (rand() %
+           (upper - lower + 1)) + lower;
+        return (num);
+    }
+}
 
 void my_event(project_t *project)
 {
@@ -23,6 +33,10 @@ void my_event(project_t *project)
 
 void my_screensaver(void)
 {
+    /*int i1 = random_number(1,255);
+    int i2 = random_number(1,255);
+    int i3 = random_number(1,255);*/
+    sfColor color = sfColor_fromRGB((rand() % (255 - 0 + 1)) + 0, (rand() % (255 - 0 + 1)), (rand() % (255 - 0 + 1)) + 0);
     project_t project;
     sfClock *clock;
     int var = 100;
@@ -31,10 +45,10 @@ void my_screensaver(void)
     sfVertex line[3];
     line[0].position.x = (float)960;
     line[0].position.y = height - len;
-    line[0].color = sfWhite;
+    line[0].color = color;
     line[1].position.x = (float)960;
     line[1].position.y = height;
-    line[1].color = sfWhite;
+    line[1].color = color;
     sfVector2f pos = {958, height};
     sfVector2f vector = {4, len};
     int a = 0;
@@ -52,12 +66,14 @@ void my_screensaver(void)
         //while (clock < 1000);
         //sfClock_destroy(clock);
 
-        branch(0.6, line, &project, 3.1415 / 4 * 3);
+        branch(0.6, line, &project, 3.1415 / 4 * 3, 0);
+        color = sfColor_fromRGB((rand() % (255 - 0 + 1)) + 0, (rand() % (255 - 0 + 1)), (rand() % (255 - 0 + 1)) + 0);
         line[0].position.x = 960;
         line[0].position.y = height - len;
+        line[0].color = color;
         line[1].position.x = 960;
         line[1].position.y = height;
-        while(1);
+        line[1].color = color;
     }
     sfRenderWindow_destroy(project.window);
 }

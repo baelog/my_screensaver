@@ -1,48 +1,67 @@
 #include <SFML/Audio.h>
 #include <SFML/Graphics.h>
+#include <SFML/Audio.h>
+#include <SFML/Graphics.h>
+#include <SFML/System.h>
+#include <SFML/Window.h>
 
-int main()
+typedef struct project_s
 {
-    const char* frag;
-    sfShader* shader;
-    sfRenderWindow* win;
-    sfImage* fg;
-    sfTexture* fgt;
-    sfSprite* fgs;
-    sfRenderStates state;
+    sfRenderWindow* window;
+    sfVideoMode mode;
     sfEvent event;
-    sfVideoMode mode = {800, 600, 32};
+}project_t;
 
-    win = sfRenderWindow_create(mode, "SFML Test", sfDefaultStyle, NULL);
-
-    fg = sfImage_createFromColor(400, 300, sfGreen);
-    fgt = sfTexture_createFromImage(fg, NULL);
-    fgs = sfSprite_create();
-    sfSprite_setTexture(fgs, fgt, 0);
-    
-    frag = "void main() {gl_FragColor = vec4(1,0,0,1);}";
-    shader = sfShader_createFromMemory(NULL, frag);
-
-    state.shader = shader;
-    state.blendMode = sfBlendAlpha;
-    state.transform = sfTransform_Identity;
-    state.texture = NULL;
-
-    while (sfRenderWindow_isOpen(win)) {
-        while (sfRenderWindow_pollEvent(win, &event)) {
-            switch (event.type) {
-                case sfEvtClosed:
-                    sfRenderWindow_close(win);
-                    continue;
-            }
-        }
-        sfRenderWindow_clear(win, sfBlack);
-
-        sfRenderWindow_drawSprite(win, fgs, &state); 
-        //sfRenderWindow_drawSprite(win, fgs, NULL);
-
-        sfRenderWindow_display(win);
+void my_event(project_t *project)
+{
+    while (sfRenderWindow_pollEvent(project->window, &project->event)) {
+        if (sfKeyboard_isKeyPressed(sfKeyEscape))
+            sfRenderWindow_close(project->window);
     }
+}
 
-    return 0;
+void my_screensaver(void)
+{
+    int var = 100;
+    float len = (float)200;
+    float height = (float)860;
+    sfVector2f pos = {958, height};
+    sfVector2f vector = {4, len};
+    sfVertexArray *array = sfVertexArray_create();
+    sfVertexArray_setPrimitiveType(array, sfLines);
+    sfVertex vertex1;
+    sfVertex vertex2;
+    vertex1.position.x = (float)960;
+    vertex1.position.y = height - len;
+    vertex1.color = sfWhite;
+    vertex2.position.x = (float)960;
+    vertex2.position.y = height;
+    vertex2.color = sfWhite;
+    sfVertexArray_append(array, vertex1);
+    sfVertexArray_append(array, vertex2);
+    /*sf::VertexArray array(sf::PrimitiveType::Lines); // chaque paire de vertex forme une ligne
+    array.append(sf::Vertex(sf::Vector2f(x1, y1), sf::Color)); // point de départ de la ligne
+    array.append(sf::Vertex(sf::Vector2f(x2, y2), sf::Color)); // point d'arrivée de la ligne
+    array.append(sf::Vertex(sf::Vector2f(x3, y3), sf::Color)); // non affiché car pas de fin
+    sf::VertexArray arrayStrip(sf::PrimitiveType::LineStrip); // vertex se succédant pour former des lignes
+    arrayStrip.append(sf::Vertex(sf::Vector2f(x1, y1), sf::Color)); // point de départ de la ligne
+    arrayStrip.append(sf::Vertex(sf::Vector2f(x2, y2), sf::Color)); // point intermédiaire de la ligne
+    arrayStrip.append(sf::Vertex(sf::Vector2f(x3, y3), sf::Color)); // point d'arrivée de la ligne*/
+    project_t project;
+    sfVideoMode mode = {1920, 1080, 32};
+    project.window = sfRenderWindow_create(mode, "MY_SCREENSAVER", sfFullscreen, NULL);
+    sfRenderWindow_setFramerateLimit(project.window, 60);
+    while (sfRenderWindow_isOpen(project.window)) {
+        my_event(&project);
+        sfRenderWindow_clear(project.window, sfBlack);
+        sfRenderWindow_display(project.window);
+        sfRenderWindow_drawVertexArray(project.window, array, NULL);
+        sfRenderWindow_display(project.window);
+    }
+    sfRenderWindow_destroy(project.window);
+}
+
+int main(void)
+{
+    my_screensaver();
 }
