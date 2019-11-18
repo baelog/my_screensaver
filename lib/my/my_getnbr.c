@@ -22,6 +22,8 @@ int  my_getnbr(char const *str)
             number = 10 * number + (str[i] - 48);
             ++i;
         }
+        if (!str[i])
+            --i;
     }
     return (number * neg);
 }

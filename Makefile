@@ -5,7 +5,7 @@ CC	= gcc
 RM	= rm -f
 
 SRCS	=	./main.c		\
-		./my_screensaver.c	\
+		./tree.c		\
 
 OBJS	= $(SRCS:.c=.o)
 
