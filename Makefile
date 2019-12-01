@@ -5,8 +5,9 @@ CC	= gcc
 RM	= rm -f
 
 SRCS	=	./main.c		\
-		./tree.c		\
-
+		./bonus/tree.c		\
+		./bonus/clock.c		\
+		./test.c
 OBJS	= $(SRCS:.c=.o)
 
 CFLAGS = -I
