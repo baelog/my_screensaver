@@ -7,7 +7,8 @@ RM	= rm -f
 SRCS	=	./main.c		\
 		./bonus/tree.c		\
 		./bonus/clock.c		\
-		./test.c
+		./donut.c
+
 OBJS	= $(SRCS:.c=.o)
 
 CFLAGS = -I
