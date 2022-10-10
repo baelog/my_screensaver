@@ -16,9 +16,10 @@ CFLAGS += -Wall -Wextra -g3
 
 all: $(NAME)
 
+
 $(NAME): $(OBJS)
 	 cd lib/my/; make re
-	 $(CC) $(OBJS) -o $(NAME) $(LDFLAGS) -lc_graph_prog -L./lib -lmy -lm
+	 $(CC) $(OBJS) -o $(NAME) $(LDFLAGS) -l csfml-graphics -l csfml-audio -l csfml-system -l csfml-window -L./lib -lmy -lm
 
 clean:
 	$(RM) $(OBJS)

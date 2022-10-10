@@ -92,6 +92,8 @@ int my_pixel(void)
         {
             if (sfKeyboard_isKeyPressed(sfKeyEscape))
                 sfRenderWindow_close(window);
+            if (event.type == sfEvtClosed)
+                sfRenderWindow_close(window);
         }
         time = sfClock_getElapsedTime(clock);
         if (time.microseconds / 10000 >= 1) {
